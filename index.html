@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOX CINEMA | Hollywood AI Text-to-Speech Studio</title>
+  <meta name="description" content="Generate lifelike speech using legendary Hollywood actor voices. Powered by ElevenLabs Neural AI with 4 distinct characters and genders.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="cinema-dark">
+  <!-- Atmospheric background glows -->
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+  <div class="ambient-glow glow-3" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5v14M7 9v6M22 8v8M2 11v2"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">VOX <span class="gradient-text">CINEMA</span></h1>
+          <p class="brand-subtitle">Hollywood AI Text to Speech Studio</p>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <div class="status-badge" id="apiStatusBadge">
+          <span class="status-dot pulsing"></span>
+          <span class="status-text">ElevenLabs AI Active</span>
+        </div>
+        <button id="themeToggleBtn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="studio-container">
+    <!-- Hero Banner -->
+    <section class="hero-section">
+      <div class="hero-tag">
+        <span class="tag-sparkle">✨</span> 4 HOLLYWOOD LEGENDS • MULTI-CHARACTER & GENDER SYNTHESIS
+      </div>
+      <h2 class="hero-title">Give Your Script The Voice of a <span class="glow-text">Hollywood Icon</span></h2>
+      <p class="hero-desc">
+        Select from 4 distinct legendary Hollywood actor personas across male and female archetypes. Powered by ElevenLabs ultra-high definition neural voice synthesis.
+      </p>
+    </section>
+
+    <!-- Actor Casting Stage (Voice Selection) -->
+    <section class="casting-section" aria-label="Actor Casting Selection">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="step-num">01</span>
+          <div>
+            <h3 class="section-heading">Cast Your Lead Actor</h3>
+            <p class="section-subheading">Choose character personality, gender, and vocal tone</p>
+          </div>
+        </div>
+        <div class="gender-filters" id="genderFilters">
+          <button class="filter-pill active" data-filter="all">All Voices (4)</button>
+          <button class="filter-pill" data-filter="male">Male (2)</button>
+          <button class="filter-pill" data-filter="female">Female (2)</button>
+        </div>
+      </div>
+
+      <!-- 4 Spotlight Voice Cards -->
+      <div class="actor-grid" id="actorGrid">
+        <!-- Rendered dynamically via app.js with high-res avatars -->
+      </div>
+
+      <!-- Bonus Voices Drawer Toggle -->
+      <div class="bonus-voices-wrap">
+        <button id="toggleBonusBtn" class="bonus-toggle-btn" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 9l-7 7-7-7"/>
+          </svg>
+          <span>More Hollywood Cameos (McConaughey, Craig, Reynolds, Blanchett)</span>
+        </button>
+        <div class="bonus-drawer" id="bonusDrawer" hidden>
+          <div class="bonus-grid" id="bonusGrid">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Studio Production Deck -->
+    <section class="production-deck" aria-label="Studio Production Deck">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="step-num">02</span>
+          <div>
+            <h3 class="section-heading">Director's Script</h3>
+            <p class="section-subheading">Enter your dialogue or load an iconic movie preset</p>
+          </div>
+        </div>
+        <div class="script-tools">
+          <button id="clearScriptBtn" class="tool-btn" title="Clear text">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 6L6 19M6 6l13 13"/>
+            </svg>
+            Clear
+          </button>
+          <button id="sampleQuoteBtn" class="tool-btn highlight" title="Load actor's iconic quote">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 3l14 9-14 9V3z"/>
+            </svg>
+            Actor Quote
+          </button>
+        </div>
+      </div>
+
+      <!-- Preset Monologues -->
+      <div class="presets-bar" id="presetsBar">
+        <span class="presets-label">🎬 Presets:</span>
+        <button class="preset-chip" data-preset="shawshank">Shawshank Hope</button>
+        <button class="preset-chip" data-preset="terminator">Terminator Protocol</button>
+        <button class="preset-chip" data-preset="her">Her: AI Sentience</button>
+        <button class="preset-chip" data-preset="lalaland">La La Land Dreamers</button>
+        <button class="preset-chip" data-preset="interstellar">Interstellar Stars</button>
+        <button class="preset-chip" data-preset="bond">License to Speak</button>
+      </div>
+
+      <!-- Script Input Box -->
+      <div class="script-box-container">
+        <div class="active-actor-banner" id="activeActorBanner">
+          <img id="bannerAvatar" src="assets/morgan.jpg" alt="Selected Actor Avatar" class="banner-avatar">
+          <div class="banner-meta">
+            <div class="banner-name-row">
+              <span class="speaking-indicator"></span>
+              <span id="bannerActorName" class="banner-actor-name">Morgan Freeman</span>
+              <span id="bannerGenderBadge" class="actor-badge male">MALE</span>
+            </div>
+            <span id="bannerArchetype" class="banner-archetype">The Iconic Narrator • Epic Storyteller</span>
+          </div>
+        </div>
+
+        <div class="textarea-wrap">
+          <textarea 
+            id="scriptInput" 
+            placeholder="Type or paste your script here... Experience Hollywood voice acting at its finest."
+            rows="5"
+            maxlength="2500"
+          >Hope is a good thing, maybe the best of things, and no good thing ever dies. I find I am so excited, I can barely sit still or hold a thought in my head.</textarea>
+          
+          <div class="script-footer">
+            <div class="script-stats">
+              <span id="charCount">142</span> / 2,500 chars
+              <span class="stat-divider">•</span>
+              <span id="wordCount">29</span> words
+              <span class="stat-divider">•</span>
+              Est. <span id="estDuration">~12s</span> audio
+            </div>
+            <div class="hotkey-hint">Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to generate</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Studio Performance Sliders (Advanced Controls) -->
+      <details class="controls-accordion" id="controlsAccordion">
+        <summary class="accordion-summary">
+          <div class="summary-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>
+            </svg>
+            <span>Voice Acoustics & Delivery Settings</span>
+          </div>
+          <span class="summary-badge">Customizable</span>
+        </summary>
+        
+        <div class="controls-grid">
+          <!-- Stability Slider -->
+          <div class="control-card">
+            <div class="control-header">
+              <label for="stabilitySlider">Performance Stability</label>
+              <span id="stabilityVal" class="control-val">0.50</span>
+            </div>
+            <input type="range" id="stabilitySlider" min="0.1" max="1.0" step="0.05" value="0.50">
+            <div class="range-labels">
+              <span>Dynamic & Emotional</span>
+              <span>Steady & Consistent</span>
+            </div>
+          </div>
+
+          <!-- Similarity Slider -->
+          <div class="control-card">
+            <div class="control-header">
+              <label for="similaritySlider">Actor Timbre Fidelity</label>
+              <span id="similarityVal" class="control-val">0.75</span>
+            </div>
+            <input type="range" id="similaritySlider" min="0.3" max="1.0" step="0.05" value="0.75">
+            <div class="range-labels">
+              <span>Broader Range</span>
+              <span>Ultra-Authentic</span>
+            </div>
+          </div>
+
+          <!-- AI Model Selection -->
+          <div class="control-card">
+            <div class="control-header">
+              <label for="modelSelect">Neural Engine</label>
+              <span class="control-val badge">ElevenLabs</span>
+            </div>
+            <select id="modelSelect" class="studio-select">
+              <option value="eleven_turbo_v2_5" selected>Eleven Turbo v2.5 (Fast & Ultra-Realistic)</option>
+              <option value="eleven_multilingual_v2">Eleven Multilingual v2 (High-Fidelity Cinema)</option>
+            </select>
+            <div class="range-labels">
+              <span>Optimized for latency and actor emotion</span>
+            </div>
+          </div>
+
+          <!-- Speech Speed Rate -->
+          <div class="control-card">
+            <div class="control-header">
+              <label for="speedSlider">Playback Tempo</label>
+              <span id="speedVal" class="control-val">1.0x</span>
+            </div>
+            <input type="range" id="speedSlider" min="0.75" max="1.5" step="0.05" value="1.0">
+            <div class="range-labels">
+              <span>0.75x Cinematic</span>
+              <span>1.0x Normal</span>
+              <span>1.5x Brisk</span>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Primary Action Bar -->
+      <div class="action-bar">
+        <button id="generateBtn" class="action-btn generate-btn">
+          <div class="btn-shimmer" aria-hidden="true"></div>
+          <span class="btn-content">
+            <svg class="btn-icon play-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <svg class="btn-icon spinner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+              <path d="M12 2a10 10 0 0 1 10 10" />
+            </svg>
+            <span id="generateBtnText">Direct & Synthesize Speech</span>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Master Audio Player & Visualizer -->
+    <section class="master-player-section" id="masterPlayerSection" aria-label="Audio Playback Master">
+      <div class="player-card">
+        <div class="player-header">
+          <div class="now-playing-meta">
+            <div class="equalizer-bars" id="equalizerBars" aria-hidden="true">
+              <span class="eq-bar"></span>
+              <span class="eq-bar"></span>
+              <span class="eq-bar"></span>
+              <span class="eq-bar"></span>
+              <span class="eq-bar"></span>
+            </div>
+            <div>
+              <div class="player-title" id="playerActorTitle">Ready to Produce</div>
+              <div class="player-subtitle" id="playerTextPreview">Select an actor and hit generate to begin playback</div>
+            </div>
+          </div>
+
+          <div class="player-quick-actions">
+            <button id="copyAudioLinkBtn" class="action-pill-btn" title="Copy Text" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              Copy Script
+            </button>
+            <a id="downloadAudioBtn" class="action-pill-btn download-btn" download="hollywood_vox_speech.mp3" title="Download High-Res MP3" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download MP3
+            </a>
+          </div>
+        </div>
+
+        <!-- Real-time Audio Spectrum Visualizer Canvas -->
+        <div class="visualizer-container">
+          <canvas id="visualizerCanvas" width="900" height="120"></canvas>
+          <div class="visualizer-ambient-overlay"></div>
+        </div>
+
+        <!-- Timeline & Scrub Bar -->
+        <div class="timeline-row">
+          <span id="currentTimeDisplay" class="time-readout">0:00</span>
+          <div class="seek-bar-wrap">
+            <input type="range" id="seekBar" class="seek-bar" min="0" max="100" value="0" step="0.1" disabled>
+            <div class="seek-fill" id="seekFill"></div>
+          </div>
+          <span id="totalTimeDisplay" class="time-readout">0:00</span>
+        </div>
+
+        <!-- Playback Controls -->
+        <div class="playback-controls">
+          <div class="controls-left">
+            <button id="rewindBtn" class="control-circle-btn small" title="Rewind 5s" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 19l-9-7 9-7v14zM22 19l-9-7 9-7v14z"/>
+              </svg>
+            </button>
+            <button id="masterPlayBtn" class="control-circle-btn primary" title="Play / Pause" disabled>
+              <svg id="playIconSvg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <svg id="pauseIconSvg" viewBox="0 0 24 24" fill="currentColor" hidden>
+                <path d="M6 4h4v16H6zM14 4h4v16h-4z"/>
+              </svg>
+            </button>
+            <button id="forwardBtn" class="control-circle-btn small" title="Forward 5s" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 5l9 7-9 7V5zM2 5l9 7-9 7V5z"/>
+              </svg>
+            </button>
+            <button id="loopToggleBtn" class="control-circle-btn mini" title="Toggle Loop">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 1l4 4-4 4"/>
+                <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                <path d="M7 23l-4-4 4-4"/>
+                <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="controls-right">
+            <div class="volume-wrap">
+              <button id="muteBtn" class="icon-btn mini" title="Mute">
+                <svg id="volHighIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                </svg>
+                <svg id="volMutedIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" hidden>
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                  <line x1="23" y1="9" x2="17" y2="15"/>
+                  <line x1="17" y1="9" x2="23" y2="15"/>
+                </svg>
+              </button>
+              <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1" class="volume-slider">
+            </div>
+          </div>
+        </div>
+      </div>
+      <audio id="audioElement" preload="auto"></audio>
+    </section>
+
+    <!-- Studio Generation History -->
+    <section class="history-section" aria-label="Generation History">
+      <div class="history-header">
+        <div class="history-title-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <h3 class="section-heading">Studio History Archive</h3>
+          <span id="historyCountBadge" class="history-count">0 items</span>
+        </div>
+        <button id="clearHistoryBtn" class="clear-history-btn" title="Clear all history">
+          Clear Archive
+        </button>
+      </div>
+
+      <div class="history-list" id="historyList">
+        <div class="empty-history" id="emptyHistoryMsg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p>No speech generated yet. Type your script above and hit <strong>Direct & Synthesize</strong>!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <strong>VOX CINEMA</strong> • Powered by ElevenLabs Neural Audio Synthesizer
+      </div>
+      <div class="footer-right">
+        <span>4 Iconic Hollywood Archetypes</span>
+        <span class="sep">•</span>
+        <span>Male & Female Voice Roster</span>
+        <span class="sep">•</span>
+        <span>Real-time Waveform Processing</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
